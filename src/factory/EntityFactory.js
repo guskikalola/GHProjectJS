@@ -148,16 +148,18 @@ class EntityFactory {
                             } else {
                                 iteration = this.buildIteration(iterationField);
                                 iteration.parent = project;
+                                project._iterations.push(iteration);
                             }
                         }
 
                         if (milestoneField != undefined) {
-                            let msMatch = project.getMilestones().find(ms => ms.id == milestoneField.id);
+                            let msMatch = project.getMilestones().find(ms => ms.id == milestoneField.milestone.id);
                             if (msMatch != undefined) {
                                 milestone = msMatch;
                             } else {
                                 milestone = this.buildMilestone(milestoneField);
                                 milestone.parent = project;
+                                project._milestones.push(milestone);
                             }
                         }
 

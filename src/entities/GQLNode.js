@@ -1,5 +1,3 @@
-import GraphQL from "../GraphQL.js";
-
 class GQLNode {
     /**
      * @param {string} id 
