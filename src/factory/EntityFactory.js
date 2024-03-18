@@ -1,5 +1,6 @@
 import Item from "../entities/Item.js";
 import Iteration from "../entities/Iteration.js";
+import Label from "../entities/Label.js";
 import Milestone from "../entities/Milestone.js";
 import Project from "../entities/Project.js";
 import { findField, parseFieldValues } from "../helpers.js";
@@ -79,6 +80,21 @@ class EntityFactory {
                       }
                       ... on ProjectV2ItemFieldSingleSelectValue {
                         name
+                        field {
+                          ... on ProjectV2FieldCommon {
+                            name
+                          }
+                        }
+                      }
+                      ... on ProjectV2ItemFieldLabelValue {
+                        labels (first: 100) {
+                          nodes {
+                            id
+                            name
+                            description
+                            color
+                          }
+                        }
                         field {
                           ... on ProjectV2FieldCommon {
                             name
@@ -217,7 +233,13 @@ class EntityFactory {
     let status = fields["Status"];
     let estimate = fields["Estimate"] || 0;
     let dedication = fields["Dedication"] || 0;
-    let item = new Item(nodeId, undefined, title, startDate, endDate, status, estimate, undefined, undefined, dedication);
+    let labelsRaw = fields["Labels"] || [];
+    let labels = labelsRaw.map(label =>  this.buildLabel(label));
+    let item = new Item(nodeId, undefined, title, startDate, endDate, status, estimate, undefined, undefined, dedication,labels);
+
+    for(let label of labels) {
+      label.parent = item;
+    }
 
     return item;
   }
@@ -257,6 +279,14 @@ class EntityFactory {
     milestone.dueOn = data.milestone.dueOn ? new Date(data.milestone.dueOn) : undefined;
 
     return milestone;
+  }
+
+  /**
+   * @returns {Label}
+   */
+  buildLabel(data) {
+    let label = new Label(data.id,undefined, data.name,data.description,data.color);
+    return label;
   }
 }
 

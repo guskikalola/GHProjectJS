@@ -14,6 +14,14 @@ function parseFieldValues(fieldValues) {
             value = item["number"];
         } else if (item["id"] != undefined) {
             value = item["id"];
+        } else if (item["labels"] != undefined)
+        {
+            if (item["labels"] != undefined)
+            {
+                value = item["labels"]["nodes"];
+            } else {
+                value = [];
+            }
         }
         else {
             value = new Date(item["date"]);
@@ -30,10 +38,10 @@ function parseFieldValues(fieldValues) {
     return parsed;
 }
 
-function findField(fieldValues,name) {
+function findField(fieldValues, name) {
     for (let item of fieldValues["nodes"]) {
         if (item["field"] == undefined) continue;
-        
+
         if (item["field"]["name"] == name) return item;
     }
 

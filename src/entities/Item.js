@@ -1,5 +1,6 @@
 import GQLNode from "./GQLNode.js";
 import Iteration from "./Iteration.js";
+import Label from "./Label.js";
 import Milestone from "./Milestone.js";
 import Project from "./Project.js";
 
@@ -16,8 +17,9 @@ class Item extends GQLNode {
      * @param {Iteration} iteration 
      * @param {Milestone} milestone 
      * @param {number} dedication 
+     * @param {Label[]} labels 
      */
-    constructor(nodeId,project,title, startDate, endDate, status, estimate, iteration, milestone, dedication) {
+    constructor(nodeId,project,title, startDate, endDate, status, estimate, iteration, milestone, dedication, labels) {
         super(nodeId,project);
 
         this.title = title;
@@ -28,6 +30,7 @@ class Item extends GQLNode {
         this.iteration = iteration;
         this.milestone = milestone;
         this.dedication = dedication; 
+        this.labels = labels;
     }
 }
 
